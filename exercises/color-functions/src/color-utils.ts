@@ -1,41 +1,31 @@
 //TODO: Implement hexToRgb
-export function hexToRgb(hex: string) : object {
-  let redHex = hex.length == 3 ? hex.substr(0, 1) : hex.substr(0,2);
-  let greenHex = hex.length == 3 ? hex.substr(1, 1) : hex.substr(2,2);
-  let blueHex = hex.length == 3 ? hex.substr(2,1) : hex.substr(4,2);
+export function hexToRgb(hex: string): {r: number, g: number, b: number} {
+  let rHex: string;
+  let gHex: string;
+  let bHex: string;
+  let colorChannels: number[];
 
-  if (hex.length == 3) {
-    redHex += redHex
-    greenHex += greenHex;
-    blueHex += blueHex;
+
+  if (hex.length === 3) {
+    [rHex, gHex, bHex] = hex.split('');
+    return hexToRgb(`${rHex + rHex}${gHex + gHex}${bHex + bHex}`);
   }
 
-  let redChannel = parseInt(redHex, 16);
-  let greenChannel = parseInt(greenHex, 16);
-  let blueChannel = parseInt(blueHex, 16);
+  let [r, g, b] = [0, 2, 4]
+    .map(offset => hex.substring(offset, offset + 2))
+    .map(hexChannel => parseInt(hexChannel, 16));
 
-  return {r: redChannel,g: greenChannel,b: blueChannel};
+  return {r, g, b};
 }
 
 //TODO: Implement rgbToHex
-export function rgbToHex(red: number, green: number, blue: number) : string {
-  let redHex = numberToHex(red);
-  let greenHex = numberToHex(green);
-  let blueHex = numberToHex(blue);
-
-  return `${redHex}${greenHex}${blueHex}`;
+export function rgbToHex(red: number, green: number, blue: number): string {
+  return [red, green, blue]
+    .map(decimalChannel => numberToHex(decimalChannel))
+    .join('');
 }
 
 function numberToHex(number: number) : string {
-  if (number > 255) {
-    number = 255;
-  }
-
-  if (number < 0) {
-    number = 0;
-  }
-
-  let numString = number.toString(16);
-
-  return numString.padStart(2, "0")
+  number = Math.max(0, Math.min(255, number));
+  return number.toString(16).padStart(2, "0")
 }
