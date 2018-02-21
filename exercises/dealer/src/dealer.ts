@@ -1,3 +1,14 @@
+type Card = [Suit, CardNumber];
+
+
+export enum CardNumber {
+  Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
+}
+
+export enum Suit {
+  Club, Diamond, Heart, Spade
+}
+
 /**
  * Shuffle an array in place
  * @param a Array to shuffle
@@ -12,27 +23,33 @@ function shuffleArray(a: any[]) {
   }
 }
 
-type Card = [number, number];
-
-
-export enum CardNumber {
-  Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
-}
-
-export enum Suit {
-  Club, Diamond, Heart, Spade
+function generateDeck() {
+  let deck: Card[] = [];
+  for(let card in CardNumber) {
+    const cardValue = Number.parseInt(card);
+    if (isNaN(cardValue)) {
+      break;
+    }
+    for(let suit in Suit) {
+      const suitValue = Number.parseInt(suit);
+      if (isNaN(suitValue)) {
+        break;
+      }
+      deck.push([suitValue, cardValue]);
+    }
+  }
+  return deck;
 }
 
 export class Dealer {
   deck: Card[];
   constructor() {
-    this.deck = this.generateDeck();
+    this.deck = generateDeck();
     shuffleArray(this.deck);
   }
 
   readCard(card: Card): string {
-    let suit = Suit[card[0]];
-    let cardNumber = CardNumber[card[1]];
+    let [suit, cardNumber] = [Suit[card[0]], CardNumber[card[1]]];
     return `${cardNumber} of ${suit}s`;
   }
 
@@ -41,30 +58,8 @@ export class Dealer {
   }
 
   dealHand(numberOfCards: number): Card[] {
-    if (numberOfCards > this.deck.length || numberOfCards < 0) {
-      throw "Invalid number of cards requested." ;
-    }
-    let hand: Card[] = [];
-    for(let i = 0; i < numberOfCards; i++) {
-      hand.push(this.deck[i]);
-    }
-    this.deck = this.deck.slice(numberOfCards);
-    return hand;
-  }
-
-  private generateDeck() {
-    let deck: Card[] = [];
-    for(let card in CardNumber) {
-      if (isNaN(Number.parseInt(card))) {
-        break;
-      }
-      for(let suit in Suit) {
-        if (isNaN(Number.parseInt(suit))) {
-          break;
-        }
-        deck.push([Number.parseInt(suit), Number.parseInt(card)]);
-      }
-    }
-    return deck;
+    if (numberOfCards > this.getLength()) throw Error('Not enough cards in deck.');
+    if (numberOfCards <= 0) throw Error('You can\'t ask for less than 1 card');
+    return this.deck.splice(this.getLength() - numberOfCards, numberOfCards)
   }
 }
