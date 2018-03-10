@@ -36,9 +36,7 @@ export class AccountManager {
    * @return the updated user object, now activated
    */
   activateNewUser(approver: Admin, userToApprove: User): ConfirmedUser {
-    let pendingConfirmationUser = userToApprove as ConfirmedUser;
-    pendingConfirmationUser.isActive = true;
-    return pendingConfirmationUser;
+    return { ...userToApprove, isActive: true };
   }
 
   /**
@@ -49,8 +47,6 @@ export class AccountManager {
    */
   promoteToAdmin(existingAdmin: Admin, user: ConfirmedUser): Admin {
     if (user.isActive !== true) throw "User must be active in order to be promoted to admin!";
-    let newAdmin = user as Admin
-    newAdmin.adminSince = new Date();
-    return newAdmin;
+    return { ...user, adminSince: new Date() };
   }
 }
