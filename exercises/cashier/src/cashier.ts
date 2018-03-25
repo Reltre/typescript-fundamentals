@@ -5,8 +5,8 @@ interface CartItem {
 }
 
 interface CartAPI {
-  add: object;
-  addItem: object;
+  add(name: string, price: number, qty: number): CartAPI;
+  addItem(item: CartItem): CartAPI;
   length: number;
   total: number;
 }
