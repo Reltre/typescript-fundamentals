@@ -13,27 +13,22 @@ interface CartAPI {
 
 export function cashier() {
   let items: CartItem[] = [];
-
-  function updateCart(price: number, qty: number) {
-    for(let idx = 0; idx < qty; idx++) {
-      cart.total += price;
-      cart.length++;
-    }
-  }
   
   let cart: CartAPI = { 
     add(name: string, price: number, qty: number = 1): CartAPI {
       items.push({name, price, qty})
-      updateCart(price, qty);
       return this; 
     }, 
     addItem(item: CartItem): CartAPI {
       items.push(item);
-      updateCart(item.price, item.qty);
       return this; 
     }, 
-    length: 0, 
-    total: 0 
+    get length() { 
+      return items.reduce((len, item) => len + item.qty, 0); 
+    }, 
+    get total() { 
+      return items.reduce((tot, item) => tot + item.price * item.qty, 0);
+    }  
   }
 
   return cart;
