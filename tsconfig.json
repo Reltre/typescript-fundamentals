@@ -18,6 +18,7 @@
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "exercises/**/tests/task.test.tsx"
   ]
 }

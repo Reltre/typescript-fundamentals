@@ -2,31 +2,22 @@ import * as React from 'react';
 import { PlaceSearchResultList } from './place-search-result-list';
 import { PlaceDetails, PlaceSummary, fetchPlaceSummaries, fetchPlaceDetails } from './utils/places';
 
-interface IAppState {
-  results: PlaceDetails[];
-  inProgress: boolean;
-  term: string; 
-}
 
-export class App extends React.Component<{}, IAppState> {
-  constructor() {
-    super();
-    this.state = {
-      results: [],
-      term: '',
-      inProgress: false
-    };
-  }
+
+export class App extends React.Component<{}, {}> {
   async trySearch(search: string) {
-    this.setState({ inProgress: true, term: search });
-    let placeSummaries: PlaceSummary[] = await fetchPlaceSummaries(search);
-    let results: PlaceDetails[] = await fetchPlaceDetails(placeSummaries.map(p => p.place_id));
-    this.setState({ results, inProgress: false });
+    try {
+      this.setState({ inProgress: true, term: search });
+      let placeSummaries: PlaceSummary[] = await fetchPlaceSummaries(search);
+      let results: PlaceDetails[] = await fetchPlaceDetails(placeSummaries.map(p => p.place_id));
+      this.setState({ results, inProgress: false });
+    } catch {
+      throw new Error("There was a problem fetching place data")
+    }
   }
   render() {
-    console.log(this.state.results);
     return (
-      <PlaceSearchResultList />
+      <PlaceSearchResultList { ...this.trySearch }/>
     );
   }
 };

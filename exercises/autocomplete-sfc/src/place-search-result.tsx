@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PlaceDetails } from './utils/places';
 
-export const PlaceSearchResult: React.SFC<any> = (placeDetails) => {
+export const PlaceSearchResult: React.SFC<PlaceDetails> = (placeDetails) => {
   return (
     <div>
       <li className="search-result">
