@@ -1,32 +1,18 @@
 import * as React from 'react';
-import { PlaceDetails } from './utils/places';
-
-interface IAppProps {
-  inProgress?: boolean;
-  term?: string; 
-  results?: PlaceDetails[];
-}
-
-type IAppState = IAppProps;
-
-/** @augments {React.Component<object, object>} */
-
-export class PlaceSearchResultList extends React.Component<IAppProps, IAppState> {
-  constructor(props: IAppProps) {
-    super({...props}, {});
-    // console.log(state);
-    this.state = {
-      results: props.results || [],
-      term: props.term || '',
-      inProgress: props.inProgress || false
-    };
-  }
-
-  render() {
-    console.log(this.state.results);
-    
+import { PlaceDetails, PlaceSummary, fetchPlaceSummaries, fetchPlaceDetails } from './utils/places';
+import { IAppProps } from './app'
+export const PlaceSearchResultList: React.SFC<IAppProps> = (props) => {
+  // {/* {JSON.stringify(props.inProgress)} */}
+  console.log(props);
+  if (props.term) {
     return (
-      <pre>{JSON.stringify(arguments)}</pre>
+      <pre>
+        <ul className='results'>
+          {props.results}
+        </ul>
+      </pre>
     )
+  } else {
+    return <p>No results</p>
   }
 }
