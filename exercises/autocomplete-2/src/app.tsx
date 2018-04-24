@@ -4,20 +4,9 @@ import { PlaceDetails, PlaceSummary, fetchPlaceSummaries, fetchPlaceDetails } fr
 
 
 
-export class App extends React.Component<{}, {}> {
-  async trySearch(search: string) {
-    try {
-      this.setState({ inProgress: true, term: search });
-      let placeSummaries: PlaceSummary[] = await fetchPlaceSummaries(search);
-      let results: PlaceDetails[] = await fetchPlaceDetails(placeSummaries.map(p => p.place_id));
-      this.setState({ results, inProgress: false });
-    } catch {
-      throw new Error("There was a problem fetching place data")
-    }
-  }
-  render() {
-    return (
-      <PlaceSearchResultList { ...this.trySearch }/>
-    );
-  }
+export const App: React.SFC = () => {
+  <input type="text"></input>
+  return (
+      <PlaceSearchResultList inProgress={true} term={'xylophone'} results={[] as PlaceDetails[]}/>
+  );
 };

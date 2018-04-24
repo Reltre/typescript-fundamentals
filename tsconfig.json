@@ -19,6 +19,6 @@
   },
   "exclude": [
     "node_modules",
-    "exercises/**/tests/task.test.tsx"
+    "exercises/**/tests/*.test.tsx"
   ]
 }
