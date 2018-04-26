@@ -2,13 +2,11 @@ import * as React from 'react';
 import { PlaceSearchResultList } from './place-search-result-list';
 import { PlaceDetails, PlaceSummary, fetchPlaceSummaries, fetchPlaceDetails } from './utils/places';
 
-interface IAppState {
+export interface IAppState {
   inProgress?: boolean;
   term?: string; 
   results?: PlaceDetails[];
 }
-
-export type IAppProps = IAppState;
 
 export class App extends React.Component<{}, IAppState> {
   constructor() {
@@ -18,6 +16,7 @@ export class App extends React.Component<{}, IAppState> {
       term: '',
       inProgress: false
     };
+    this.trySearch = this.trySearch.bind(this);
   }
 
   async trySearch(search: string) {
@@ -27,19 +26,10 @@ export class App extends React.Component<{}, IAppState> {
     this.setState({ results, inProgress: false });
   }
 
-  componentDidMount() {
-    const input = document.querySelector("input");
-    if (!input) return;
-    input.addEventListener('input', () => {
-      this.trySearch(input.value)
-    });
-  }
-
   render() {
     return (
       <div>
-        <input type="text"  />
-        <PlaceSearchResultList {...this.state}/>
+        <PlaceSearchResultList {...this.state} handleSearch={this.trySearch}/>
       </div>
     );
   }
