@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PlaceSearchResultList } from './place-search-result-list';
 import { PlaceDetails, PlaceSummary, fetchPlaceSummaries, fetchPlaceDetails } from './utils/places';
-import {PlaceSearchResult} from './place-search-result';
 
 interface IAppState {
   inProgress?: boolean;
@@ -14,7 +13,6 @@ export type IAppProps = IAppState;
 export class App extends React.Component<{}, IAppState> {
   constructor() {
     super({});
-    // console.log(state);
     this.state = {
       results:  [],
       term: '',
@@ -31,18 +29,13 @@ export class App extends React.Component<{}, IAppState> {
 
   componentDidMount() {
     const input = document.querySelector("input");
-    console.log(input);
     if (!input) return;
-    input.addEventListener('change', () => {
+    input.addEventListener('input', () => {
       this.trySearch(input.value)
     });
   }
 
   render() {
-    let placeResults = this.state.results!.map(pr => {
-      return <PlaceSearchResult {...pr}/>;
-    });
-
     return (
       <div>
         <input type="text"  />
