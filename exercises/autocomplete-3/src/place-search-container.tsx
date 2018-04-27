@@ -31,11 +31,11 @@ export class PlaceSearchContainer extends React.Component<{}, IPlaceSearchContai
    * @memberof PlaceSearch
    * @return {undefined}
    */
-  beginSearch(term: string): void {
+  async beginSearch(term: string): Promise<void> {
     // Initiate a search using the ./autocomplete.ts module
     // When the promise it returns resolves, update your state accordingly
     this.setState({inProgress: true, term: term});
-    autocomplete(term).then((results) => this.setState({results: results, inProgress: false}))
+    await autocomplete(term).then((results) => this.setState({results: results, inProgress: false}))
   }
 
   /**
